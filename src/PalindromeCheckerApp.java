@@ -1,48 +1,26 @@
 import java.util.Scanner;
-
-
-import java.util.Queue;
+import java.util.Deque;
 import java.util.LinkedList;
-
-import java.util.Stack;
 
 /**
  * ================================================================
  * MAIN CLASS – PalindromeCheckerApp
  * ================================================================
  *
-<<<<<<< HEAD
- * Use Case 5: Stack-Based Palindrome Checker
+ * Use Case 7: Deque-Based Optimized Palindrome Checker
  *
  * Description:
- * This program checks whether a string is a palindrome
- * using a stack to reverse the characters.
+ * This program uses a Deque to check whether a string
+ * is a palindrome by comparing front and rear elements.
  *
  * Key Concepts:
- * - Stack (LIFO)
- * - push() and pop()
- * - efficient reversal
+ * - Deque (Double Ended Queue)
+ * - removeFirst() & removeLast()
+ * - optimized comparison
  *
- * Data Structure: Stack<Character>
+ * Data Structure: Deque<Character>
  *
- * Example Input: "noon"
-=======
- * Use Case 6: Queue + Stack Based Palindrome Check
- *
- * Description:
- * This program checks whether a string is a palindrome
- * by using a Queue (FIFO) and a Stack (LIFO).
- *
- * Key Concepts:
- * - Queue (FIFO)
- * - Stack (LIFO)
- * - Enqueue, Dequeue, Push, Pop
- * - Logical comparison for palindrome
- *
- * Data Structures: Queue<Character>, Stack<Character>
- *
- * Example Input: "civic"
->>>>>>> feature/UC6
+ * Example Input: "racecar"
  */
 
 public class PalindromeCheckerApp {
@@ -55,45 +33,18 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string to check for palindrome: ");
         String text = scanner.nextLine();
 
+        // Create a deque
+        Deque<Character> deque = new LinkedList<>();
 
-        // Create a stack
-        Stack<Character> stack = new Stack<>();
-
-        // Push all characters into stack
+        // Add characters to deque
         for (int i = 0; i < text.length(); i++) {
-            stack.push(text.charAt(i));
+            deque.addLast(text.charAt(i));
         }
 
-        // Pop characters and build reversed string
-        String reversed = "";
-        while (!stack.isEmpty()) {
-            reversed += stack.pop();
-        }
-
-        // Compare original and reversed
-        boolean isPalindrome = text.equals(reversed);
-
-        // Print results
-        System.out.println("Original String : " + text);
-        System.out.println("Reversed String : " + reversed);
-
-        // Create Queue and Stack
-        Queue<Character> queue = new LinkedList<>();
-        Stack<Character> stack = new Stack<>();
-
-        // Enqueue to Queue & Push to Stack
-        for (int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i);
-            queue.add(ch); // enqueue
-            stack.push(ch); // push
-        }
-
-        // Compare dequeue vs pop
+        // Compare front and rear
         boolean isPalindrome = true;
-        while (!queue.isEmpty()) {
-            char fromQueue = queue.remove(); // FIFO
-            char fromStack = stack.pop();    // LIFO
-            if (fromQueue != fromStack) {
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
                 isPalindrome = false;
                 break;
             }
@@ -101,7 +52,6 @@ public class PalindromeCheckerApp {
 
         // Print results
         System.out.println("Input String : " + text);
-
         System.out.println("Is it a Palindrome? : " + isPalindrome);
 
         scanner.close();
