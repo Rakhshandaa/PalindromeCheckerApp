@@ -13,7 +13,7 @@
  * @version 1.0
  */
 
-public class PalindromeCheckerApp {
+public class UseCase2PalindromeCheckerApp {
 
     /**
      * Application entry point.
