@@ -1,30 +1,19 @@
 /**
  * ================================================================
-<<<<<<< HEAD
- * MAIN CLASS – UseCase2PalindromeCheckerApp
- * ================================================================
- *
- * Use Case 2: Print a Hardcoded Palindrome Result
- *
- * Description:
- * This class checks whether a hardcoded string
- * is a palindrome and displays the result.
-=======
  * MAIN CLASS – PalindromeCheckerApp
  * ================================================================
  *
- * Use Case 3: Palindrome Check Using String Reverse
+ * Use Case 4: Character Array Based Palindrome Check
  *
  * Description:
- * This program checks whether a string is a palindrome
- * by reversing it using a for loop and comparing both strings.
+ * This program converts a string into a char array and
+ * checks whether it is a palindrome using the two-pointer technique.
  *
  * Key Concepts:
- * - for loop
- * - String immutability
- * - String concatenation
- * - equals() method
->>>>>>> feature/UC3
+ * - char array (char[])
+ * - array indexing
+ * - two-pointer approach
+ * - efficient comparison
  *
  * @author Developer
  * @version 1.0
@@ -32,48 +21,30 @@
 
 public class PalindromeCheckerApp {
 
-    /**
-     * Application entry point.
-     *
-     * @param args Command-line arguments
-     */
     public static void main(String[] args) {
 
-
-        // Hardcoded string
+        // Input string to check
         String text = "madam";
 
-        // Reverse the string
-        String reversed = "";
+        // Convert string to character array
+        char[] chars = text.toCharArray();
 
-        for (int i = text.length() - 1; i >= 0; i--) {
-            reversed = reversed + text.charAt(i);
+        // Two-pointer approach
+        int left = 0;
+        int right = chars.length - 1;
+        boolean isPalindrome = true;
+
+        while (left < right) {
+            if (chars[left] != chars[right]) {
+                isPalindrome = false;
+                break;
+            }
+            left++;
+            right--;
         }
-
-        // Check if palindrome
-        boolean isPalindrome = text.equals(reversed);
-
-        // Print output (exact required format)
-        System.out.println("Input text: " + text);
-
-        // Original string
-        String original = "madam";
-
-        // Variable to store reversed string
-        String reversed = "";
-
-        // Reverse using for loop
-        for (int i = original.length() - 1; i >= 0; i--) {
-            reversed = reversed + original.charAt(i);
-        }
-
-        // Compare original and reversed using equals()
-        boolean isPalindrome = original.equals(reversed);
 
         // Display results
-        System.out.println("Original String : " + original);
-        System.out.println("Reversed String : " + reversed);
-
+        System.out.println("Input String : " + text);
         System.out.println("Is it a Palindrome? : " + isPalindrome);
     }
 }
