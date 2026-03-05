@@ -1,66 +1,96 @@
 import java.util.Scanner;
-import java.util.Queue;
-import java.util.LinkedList;
-import java.util.Stack;
 
-/**
- * ================================================================
- * MAIN CLASS – PalindromeCheckerApp
- * ================================================================
- *
- * Use Case 6: Queue + Stack Based Palindrome Check
- *
- * Description:
- * This program checks whether a string is a palindrome
- * by using a Queue (FIFO) and a Stack (LIFO).
- *
- * Key Concepts:
- * - Queue (FIFO)
- * - Stack (LIFO)
- * - Enqueue, Dequeue, Push, Pop
- * - Logical comparison for palindrome
- *
- * Data Structures: Queue<Character>, Stack<Character>
- *
- * Example Input: "civic"
- */
+class Node {
+    char data;
+    Node next;
 
-public class PalindromeCheckerApp {
+    Node(char data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class UseCase8PalindromeCheckerApp {
+
+    // Convert string to linked list
+    public static Node createLinkedList(String str) {
+        Node head = null, tail = null;
+
+        for (int i = 0; i < str.length(); i++) {
+            Node newNode = new Node(str.charAt(i));
+
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
+        }
+        return head;
+    }
+
+    // Reverse linked list
+    public static Node reverse(Node head) {
+        Node prev = null;
+        Node current = head;
+        Node next = null;
+
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        return prev;
+    }
+
+    // Check palindrome using linked list
+    public static boolean isPalindrome(Node head) {
+
+        if (head == null || head.next == null)
+            return true;
+
+        Node slow = head;
+        Node fast = head;
+
+        // Find middle using fast and slow pointers
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Reverse second half
+        Node secondHalf = reverse(slow.next);
+        Node firstHalf = head;
+
+        // Compare halves
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data)
+                return false;
+
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        return true;
+    }
 
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
-        // Prompt user input
-        System.out.print("Enter a string to check for palindrome: ");
-        String text = scanner.nextLine();
+        System.out.print("Enter a string: ");
+        String input = sc.nextLine();
 
-        // Create Queue and Stack
-        Queue<Character> queue = new LinkedList<>();
-        Stack<Character> stack = new Stack<>();
+        Node head = createLinkedList(input);
 
-        // Enqueue to Queue & Push to Stack
-        for (int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i);
-            queue.add(ch); // enqueue
-            stack.push(ch); // push
+        if (isPalindrome(head)) {
+            System.out.println("The given string is a Palindrome.");
+        } else {
+            System.out.println("The given string is NOT a Palindrome.");
         }
 
-        // Compare dequeue vs pop
-        boolean isPalindrome = true;
-        while (!queue.isEmpty()) {
-            char fromQueue = queue.remove(); // FIFO
-            char fromStack = stack.pop();    // LIFO
-            if (fromQueue != fromStack) {
-                isPalindrome = false;
-                break;
-            }
-        }
-
-        // Print results
-        System.out.println("Input String : " + text);
-        System.out.println("Is it a Palindrome? : " + isPalindrome);
-
-        scanner.close();
+        sc.close();
     }
 }
