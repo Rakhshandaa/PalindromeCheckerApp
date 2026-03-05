@@ -1,51 +1,39 @@
 import java.util.*;
-
-// Strategy Interface
-interface PalindromeStrategy {
-    boolean checkPalindrome(String str);
-}
-
-// Stack Strategy
-class StackStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String str) {
-        Stack<Character> stack = new Stack<>();
-
-        for (char c : str.toCharArray()) {
-            stack.push(c);
-        }
-
-        for (char c : str.toCharArray()) {
-            if (c != stack.pop()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-// Deque Strategy
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String str) {
-        Deque<Character> deque = new LinkedList<>();
-
-        for (char c : str.toCharArray()) {
-            deque.add(c);
-        }
-
-        while (deque.size() > 1) {
-            if (!deque.pollFirst().equals(deque.pollLast())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Stack;
 
 public class PalindromeCheckerApp {
+
+    // Simple iterative method
+    public static boolean iterativeCheck(String str) {
+        int left = 0, right = str.length() - 1;
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right))
+                return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+
+    // Stack-based method
+    public static boolean stackCheck(String str) {
+        Stack<Character> stack = new Stack<>();
+        for (char c : str.toCharArray()) stack.push(c);
+        for (char c : str.toCharArray())
+            if (c != stack.pop()) return false;
+        return true;
+    }
+
+    // Deque-based method
+    public static boolean dequeCheck(String str) {
+        Deque<Character> deque = new LinkedList<>();
+        for (char c : str.toCharArray()) deque.add(c);
+        while (deque.size() > 1)
+            if (!deque.pollFirst().equals(deque.pollLast())) return false;
+        return true;
+    }
 
     public static void main(String[] args) {
 
@@ -54,30 +42,35 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        // Normalize string
+        // Normalize string: ignore spaces and case
         String normalized = input.replaceAll("\\s+", "").toLowerCase();
 
-        System.out.println("Choose Strategy:");
-        System.out.println("1. Stack Strategy");
-        System.out.println("2. Deque Strategy");
+        // Performance testing
+        long startTime, endTime;
 
-        int choice = scanner.nextInt();
+        // Iterative
+        startTime = System.nanoTime();
+        boolean iterativeResult = iterativeCheck(normalized);
+        endTime = System.nanoTime();
+        long iterativeTime = endTime - startTime;
 
-        PalindromeStrategy strategy;
+        // Stack
+        startTime = System.nanoTime();
+        boolean stackResult = stackCheck(normalized);
+        endTime = System.nanoTime();
+        long stackTime = endTime - startTime;
 
-        if (choice == 1) {
-            strategy = new StackStrategy();
-        } else {
-            strategy = new DequeStrategy();
-        }
+        // Deque
+        startTime = System.nanoTime();
+        boolean dequeResult = dequeCheck(normalized);
+        endTime = System.nanoTime();
+        long dequeTime = endTime - startTime;
 
-        boolean result = strategy.checkPalindrome(normalized);
-
-        if (result) {
-            System.out.println("The string is a palindrome.");
-        } else {
-            System.out.println("The string is not a palindrome.");
-        }
+        // Display results
+        System.out.println("\nPalindrome Check Results:");
+        System.out.println("Iterative: " + iterativeResult + " | Time: " + iterativeTime + " ns");
+        System.out.println("Stack:     " + stackResult + " | Time: " + stackTime + " ns");
+        System.out.println("Deque:     " + dequeResult + " | Time: " + dequeTime + " ns");
 
         scanner.close();
     }
